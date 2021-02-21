@@ -1,30 +1,28 @@
-var movesquare, staysquare;
+var bullet, wall; 
+var speed, weight,damage;
+var thickness;
 function setup() {
-  createCanvas(800,400);
-  movesquare=createSprite(400, 200, 50, 50);
-  staysquare= createSprite(200,200,50,50);
-  movesquare.shapeColor="red";
-  staysquare.shapeColor="yellow";
-  movesquare.velocityX=(movesquare.x-staysquare.x)/400;
-  movesquare.velocityY=(movesquare.y-staysquare.y)/400;
+  thickness=random(22,83);
+  createCanvas(1600,400);
+  weight=random(30,52);
+  speed=random(223,321);
+  bullet= createSprite(50,200,50,10);
+  bullet.shapeColor="white";
+  wall= createSprite(1000,200,thickness,200);
+  bullet.velocityX= speed;
 }
 
 function draw() {
-  background(0);
-  if (mouseIsPressed) {
-  movesquare.x=mouseX;
-  movesquare.y=mouseY;
-  movesquare.velocityX=(staysquare.x-movesquare.x)/100;
-  movesquare.velocityY=(staysquare.y-movesquare.y)/100;
-  }
-  bounceOff(movesquare,staysquare);
+  background(0,0,0);
   drawSprites();
+  if (wall.x-bullet.x<((wall.width+bullet.width)/2)){
+    bullet.velocityX=0;
+    damage= (0.5*weight*speed*speed)/(thickness*thickness*thickness);
+    if (damage>10) {
+      bullet.shapeColor="red";
+    } else {
+      bullet.shapeColor="green";
+    }
+    console.log(damage);
+  }
 }
-function bounceOff(square1,square2) {
-  if (square1.x-(square1.width/2)<=square2.x+(square2.width/2)&&
-  square1.x+(square1.width/2)>=square2.x-(square2.width/2) &&
-  square1.y-(square1.width/2)<=square2.y+(square2.width/2)&&
-  square1.y+(square1.width/2)>=square2.y-(square2.width/2)) {
-    square1.velocityX=-(square1.velocityX);
-    square1.velocityY=-(square1.velocityY);
-}}
